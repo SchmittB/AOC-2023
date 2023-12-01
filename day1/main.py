@@ -17,8 +17,9 @@ def replace_words_with_numbers(input_string):
     return input_string
 
 
-def get_first_and_last_number(input_string):
-    input_string = replace_words_with_numbers(input_string)
+def get_first_and_last_number(input_string, replace_word):
+    if (replace_word):
+        input_string = replace_words_with_numbers(input_string)
     # Use regular expression to find all numbers in the string
     numbers = [s for s in [*input_string] if s.isdigit()]
 
@@ -28,12 +29,13 @@ def get_first_and_last_number(input_string):
     return first_number, last_number
 
 
-total = 0
 f = open("day1/input.txt", "r")
-i = 0
+total_1star = 0
+total_2star = 0
 for line in f:
-    first, last = get_first_and_last_number(line)
-    total = total + int(first + last)
-    i += 1
-# print(i)
-print(total)
+    first, last = get_first_and_last_number(line, False)
+    total_1star = total_1star + int(first + last)
+    first, last = get_first_and_last_number(line, True)
+    total_2star = total_2star + int(first + last)
+print(f"star 1: total {total_1star}")
+print(f"star 2: total {total_2star}")
