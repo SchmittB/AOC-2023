@@ -36,6 +36,7 @@ next_windows = windows
 new_windows = []
 for i, l in enumerate(lines[2:]):
     if l == '' or not (l[0].isdigit()):
+        #consolidate into windows
         next_windows.extend(windows)
         windows = next_windows
         next_windows = []

@@ -13,7 +13,6 @@ def replace_words_with_numbers(input_string):
 
     for word, number in replacements.items():
         input_string = input_string.replace(word, word + number + word)
-
     return input_string
 
 
