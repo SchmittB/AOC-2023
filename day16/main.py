@@ -1,5 +1,6 @@
 import sys
 from dataclasses import dataclass
+from datetime import datetime
 
 sys.setrecursionlimit(1_000_000)
 
@@ -10,6 +11,11 @@ class board_point:
     y: int
     symbol: str
     energy: bool = False
+
+
+def reset_grid(grid):
+    for obj in grid:
+        obj.energy = False
 
 
 def get_symbol(x, y):
@@ -84,11 +90,44 @@ grid = [
     for c in range(len(board[0]))
 ]
 
-print(grid[0])
+print(datetime.now())
+result = []
 
-starting_start_pos = (0, -1)
-starting_dir = 'R'
+for i in range(len(board)):
+    starting_start_pos = (i, -1)
+    starting_dir = 'R'
+    visited = []
+    reset_grid(grid)
 
-visited = []
-next_step(starting_start_pos, starting_dir, grid)
-print(nb_energize(grid))
+    next_step(starting_start_pos, starting_dir, grid)
+    result.append(nb_energize(grid))
+    if i == 0:
+        print('part1', result[0])
+
+    starting_start_pos = (i, len(board))
+    starting_dir = 'L'
+    visited = []
+    reset_grid(grid)
+
+    next_step(starting_start_pos, starting_dir, grid)
+    result.append(nb_energize(grid))
+
+    starting_start_pos = (-1, i)
+    starting_dir = 'S'
+    visited = []
+    reset_grid(grid)
+
+    next_step(starting_start_pos, starting_dir, grid)
+    result.append(nb_energize(grid))
+
+    starting_start_pos = (len(board), i)
+    starting_dir = 'N'
+    visited = []
+    reset_grid(grid)
+
+    next_step(starting_start_pos, starting_dir, grid)
+    result.append(nb_energize(grid))
+    print('percentage done :', round(((i + 1) / len(board)) * 100, 2))
+
+print(datetime.now())
+print(max(result))
