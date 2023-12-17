@@ -15,12 +15,7 @@ class Node:
         return self.h < other.h
 
 
-def heuristic(node, goal):
-    # Manhattan distance heuristic
-    return abs(node.x - goal.x) + abs(node.y - goal.y)
-
-
-def astar(grid, start, goal):
+def astar(grid, start, goal, least, most):
     open_set = []
     closed_set = set()
 
@@ -44,12 +39,12 @@ def astar(grid, start, goal):
         for dx, dy in {(1, 0), (0, 1), (-1, 0), (0, -1)} - {(px, py),
                                                             (-px, -py)}:
             a, b, h = x, y, heat
-            #3 moves max
-            for i in range(1, 4):
+            #most == Number of max moves for crucicles
+            for i in range(1, most + 1):
                 a, b = a + dx, b + dy
                 if -1 < a < len(grid) and -1 < b < len(grid):
                     h += grid[a][b]
-                    if i >= 1:
+                    if i >= least:
                         neighbor_node = Node(a, b, h, dx, dy)
                         heapq.heappush(open_set, neighbor_node)
 
@@ -67,8 +62,14 @@ start_point = (0, 0)
 goal = len(lines) - 1
 goal_point = (goal, goal)
 
-path = astar(grid, start_point, goal_point)
+path = astar(grid, start_point, goal_point, 1, 3)
 if path:
     print("min heat found:", path)
+else:
+    print("No path found.")
+
+path = astar(grid, start_point, goal_point, 4, 10)
+if path:
+    print("min heat found part2:", path)
 else:
     print("No path found.")
